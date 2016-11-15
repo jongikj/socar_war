@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.socar.web.mappers.CarMapper">
+<select id="list" resultType="com.socar.web.domains.CarDTO">
+  		select 
+	      car_seq carSeq,
+	      rent_amt rentAmt,
+	      drive_amt driveAmt,
+	      car_num carNum,
+	      car_type carType,
+	      oil_type oilType,
+	      car_option carOption,
+	      socar_zone socarZone,
+	      car_img carImg
+		from car
+   </select>
+   <select id="listZone" resultType="string">
+   select distinct socar_zone socarZone from car
+   </select>
+  <select id="adminList" resultType="com.socar.web.domains.CarDTO" parameterType="com.socar.web.domains.Command">
+     select t2.*
+	from (SELECT @ROWNUM := @ROWNUM + 1 AS seq2
+				,c.seq
+	            ,c.car_num carNum
+	            ,c.car_type carType
+	            ,c.oil_type oilType
+	            ,c.car_option carOption
+	            ,c.socar_zone socarZone
+	            ,c.rent_amt rentAmt
+	            ,c.drive_amt driveAmt
+	            ,c.car_img carImg
+	      FROM   car_v c
+	            ,(SELECT @ROWNUM := 0) R
+	     ) t2
+	where t2.seq2 between #{start} and #{end}
+	order by t2.seq2 asc
+   </select>
+   <select id="count" resultType="com.socar.web.domains.Retval" parameterType="com.socar.web.domains.Retval">
+   	select count(*) as count from car
+   </select>
+   <select id="find_count" resultType="com.socar.web.domains.Retval" parameterType="com.socar.web.domains.Command">
+   	select count(*) as count 
+   	from   (SELECT c.seq
+	            ,c.car_num carNum
+	            ,c.car_type carType
+	            ,c.oil_type oilType
+	            ,c.car_option carOption
+	            ,c.socar_zone socarZone
+	            ,c.rent_amt rentAmt
+	            ,c.drive_amt driveAmt
+	            ,c.car_img carImg
+	      FROM   car_v c
+	      WHERE  ${keyField} like CONCAT('%',#{keyword},'%')
+	     ) t2
+   </select>
+	<select id="find" resultType="com.socar.web.domains.CarDTO" parameterType="com.socar.web.domains.Command">
+     select *
+      from(
+      select @NO := @NO + 1 as ROWNUM, A.*
+      from
+      (
+      select
+      c.car_seq carSeq,
+      c.rent_amt rentAmt,
+      c.drive_amt driveAmt,
+      c.car_num carNum,
+      c.car_type carType,
+      c.oil_type oilType,
+      c.car_option carOption,
+      c.socar_zone socarZone,
+      c.car_img carImg
+      from car c where ${keyField} like CONCAT('%',#{keyword},'%') order by car_seq desc
+      )A,
+      (select @NO := 0)B
+      )C
+      where C.ROWNUM BETWEEN #{start} and #{end};
+   </select>
+   <select id="findOne" resultType="com.socar.web.domains.CarDTO" parameterType="com.socar.web.domains.Command">
+   		select 
+	      car_seq carSeq,
+	      rent_amt rentAmt,
+	      drive_amt driveAmt,
+	      car_num carNum,
+	      car_type carType,
+	      oil_type oilType,
+	      car_option carOption,
+	      socar_zone socarZone,
+	      car_img carImg
+		from car where ${keyField} = #{keyword}
+   </select>
+   <select id="searchList" resultType="com.socar.web.domains.CarDTO" parameterType="com.socar.web.domains.BookingDTO" statementType="CALLABLE">
+        {call sp_select_carlist(
+           #{startDate},#{endDate},#{input_location}
+        )}
+   </select>
+   <select id="car_find_by_num" resultType="com.socar.web.domains.CarDTO" parameterType="com.socar.web.domains.Command">
+      select  c.seq
+             ,c.car_num carNum
+		     ,c.car_type carType
+		     ,c.oil_type oilType
+		     ,c.car_option carOption
+		     ,c.socar_zone socarZone
+		     ,c.rent_amt rentAmt
+		     ,c.drive_amt driveAmt
+		     ,c.car_img carImg
+	  FROM    car_v c
+	  where ${keyField} = #{keyword}
+   </select>
+   <update id="update" statementType="CALLABLE" parameterType="com.socar.web.domains.CarDTO">
+      { call update_car(
+         #{carOption, mode=IN,jdbcType=VARCHAR},
+         #{socarZone, mode=IN,jdbcType=VARCHAR},
+         #{rentAmt, mode=IN,jdbcType=INTEGER},
+         #{driveAmt, mode=IN,jdbcType=INTEGER},
+         #{carNum, mode=IN,jdbcType=VARCHAR},
+         #{carImg, mode=IN,jdbcType=VARCHAR}
+      )
+      }
+   </update>
+   <select id="existId" parameterType="com.socar.web.domains.CarDTO" resultType="int">
+      select count(*) from car_v where car_num = #{carNum}
+   </select>
+   <insert id="regist" statementType="CALLABLE" parameterType="com.socar.web.domains.CarDTO">
+      { call insert_car(
+         #{carNum, mode=IN,jdbcType=VARCHAR},
+         #{carType, mode=IN,jdbcType=VARCHAR},
+         #{oilType, mode=IN,jdbcType=VARCHAR},
+         #{carOption, mode=IN,jdbcType=VARCHAR},
+         #{socarZone, mode=IN,jdbcType=VARCHAR},
+         #{rentAmt, mode=IN,jdbcType=INTEGER},
+         #{driveAmt, mode=IN,jdbcType=INTEGER},
+         #{carImg, mode=IN,jdbcType=VARCHAR}
+      )
+      }
+   </insert> 
+</mapper>

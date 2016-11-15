@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.socar.web.mappers.CouponMapper">
+<select id="count" resultType="com.socar.web.domains.Retval">
+select count(*) as count from coupon_master
+</select>
+<select id="findCount" resultType="com.socar.web.domains.Retval" parameterType="com.socar.web.domains.Command">
+   select count(*) as count from coupon_master where ${keyField} = #{keyword}
+</select>
+<select id="list" resultType="com.socar.web.domains.CouponDTO" parameterType="com.socar.web.domains.Command">
+      select 
+         coupon_master_seq couponMasterSeq,
+         coupon_name couponName,
+         open_date_start openDateStart,
+         open_date_end openDateEnd,
+         ep_date epDate,
+         option_header optionHeader,
+         option_detail optionDetail,
+         img_name imgName,
+         dc_option dcOption,
+         dc dc,
+         coupon_count couponCount 
+      from coupon_master
+</select>
+<select id="find" parameterType="com.socar.web.domains.Command" resultType="com.socar.web.domains.CouponDTO">
+     select *
+      from(
+      select @NO := @NO + 1 as ROWNUM, A.*
+      from
+      (
+      select
+      cm.coupon_master_seq couponMasterSeq,
+      cm.coupon_name couponName,
+      cm.open_date_start openDateStart,
+      cm.open_date_end openDateEnd,
+      cm.ep_date epDate,
+      cm.option_header optionHeader,
+      cm.option_detail optionDetail,
+      cm.img_name imgName,
+      cm.dc_option dcOption,
+      cm.dc dc,
+      cm.coupon_count couponCount 
+      from coupon_master cm where ${keyField} = #{keyword} order by coupon_master_seq desc
+      )A,
+      (select @NO := 0)B
+      )C
+      where C.ROWNUM BETWEEN #{start} and #{end};
+</select>
+<update id="getCoupon" parameterType="com.socar.web.domains.CouponDTO">
+	update coupon_master set coupon_count = coupon_count - 1 where  coupon_master_seq = ${couponMasterSeq}
+</update>
+	<select id="adminList" resultType="com.socar.web.domains.CouponDTO" parameterType="com.socar.web.domains.Command">
+		select t2.*
+        from (select  @ROWNUM := @ROWNUM + 1 AS seq
+ 	                 ,cm.coupon_master_seq  couponMasterSeq
+                     ,cm.coupon_name couponName
+                	 ,CONCAT(date_format(cm.open_date_start,'%Y-%m-%d %H'),'시') openDateStart
+                	 ,CONCAT(date_format(date_add(cm.open_date_end,interval 1 second),'%Y-%m-%d %H'),'시') openDateEnd
+                	 ,CONCAT(date_format(date_add(cm.ep_date,interval 1 second),'%Y-%m-%d %H'),'시') epDate
+                	 ,cm.option_header optionHeader
+                	 ,cm.option_detail optionDetail
+                	 ,cm.img_name imgName
+                	 ,cm.dc_option dcOption
+                	 ,cm.dc
+                     ,cm.coupon_count couponCount
+	          from    coupon_master cm
+                     ,(SELECT @ROWNUM := 0) R
+	         ) t2
+        where t2.seq between #{start} and #{end}
+        order by t2.couponMasterSeq asc;
+   </select>
+      <select id="coupon_find_by_seq" resultType="com.socar.web.domains.CouponDTO" parameterType="com.socar.web.domains.Command">
+      select  cm.coupon_master_seq                                         couponMasterSeq
+             ,cm.coupon_name couponName
+             ,CONCAT(date_format(cm.open_date_start,'%Y-%m-%d %H'),'시')   openDateStart
+		     ,CONCAT(date_format(date_add(cm.open_date_end,interval 1 second),'%Y-%m-%d %H'),'시')     openDateEnd
+		     ,CONCAT(date_format(date_add(cm.ep_date,interval 1 second),'%Y-%m-%d %H'),'시')           epDate
+		     ,cm.option_header     optionHeader
+		     ,cm.option_detail     optionDetail
+		     ,cm.img_name          imgName
+		     ,cm.dc_option         dcOption
+		     ,cm.dc 
+		     ,cm.coupon_count      couponCount
+	  FROM    coupon_master cm
+	  where cm.coupon_master_seq = #{keyword}
+   </select>
+   <update id="update" statementType="CALLABLE" parameterType="com.socar.web.domains.CouponDTO">
+      { call update_coupon_master(
+         #{couponMasterSeq, mode=IN,jdbcType=INTEGER},
+         #{optionHeader, mode=IN,jdbcType=CLOB},
+         #{optionDetail, mode=IN,jdbcType=VARCHAR}
+      )
+      }
+   </update>
+   <insert id="regist" statementType="CALLABLE" parameterType="com.socar.web.domains.CouponDTO">
+      { call insert_coupon_master(
+         #{couponName, mode=IN,jdbcType=VARCHAR},
+         #{openDateStart, mode=IN,jdbcType=VARCHAR},
+         #{openDateEnd, mode=IN,jdbcType=VARCHAR},
+         #{epDate, mode=IN,jdbcType=VARCHAR},
+         #{optionHeader, mode=IN,jdbcType=VARCHAR},
+         #{optionDetail, mode=IN,jdbcType=CLOB},
+         #{imgName, mode=IN,jdbcType=VARCHAR},
+         #{dcOption, mode=IN,jdbcType=VARCHAR},
+         #{dc, mode=IN,jdbcType=INTEGER},
+         #{couponCount, mode=IN,jdbcType=INTEGER}
+      )
+      }
+   </insert>
+</mapper>
