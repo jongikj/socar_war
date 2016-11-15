@@ -1722,6 +1722,9 @@ var admin = (function(){
 						'dc' : $('#admin_reg_dc').val(),
 						'couponCount' : $('#admin_reg_coupon_count').val()
 					};
+				if(join_info.imgName === ''){
+					join_info.imgName = 'default.png';
+				}
 			    $.ajax({
 					url : app.context()+'/admin/coupon_regist',
 					type : 'post',

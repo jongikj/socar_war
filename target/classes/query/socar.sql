@@ -170,7 +170,7 @@ BEGIN
           pw  = sp_pw,
           phone = sp_phone,
           address  = sp_address,
-          email = s-Pemail
+          email = sp_email
     WHERE  id = sp_id ;
 END;
 
@@ -414,7 +414,7 @@ CREATE PROCEDURE insert_coupon_master (IN sp_coupon_name       VARCHAR(255),
                                        IN sp_ep_date           DATETIME,
                                        IN sp_option_header     VARCHAR(255),
                                        IN sp_option_detail     TEXT,
-                                       IN sp_img_name          VARCHAR(20),
+                                       IN sp_img_name          VARCHAR(20) ,
                                        IN sp_dc_option         VARCHAR(255),
                                        IN sp_dc                INT,
                                        IN sp_coupon_count      INT

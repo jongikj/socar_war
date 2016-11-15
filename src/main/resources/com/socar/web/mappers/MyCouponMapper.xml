@@ -23,7 +23,7 @@
 		m.open_date_start openDateStart,
 		m.open_date_end openDateEnd
 	from coupon_member u, coupon_master m
-	where u.coupon_master_seq = m.coupon_master_seq and id = #{keyword};		
+	where u.coupon_master_seq = m.coupon_master_seq and id = #{keyword} order by u.coupon_member_seq desc;		
 	</select>
 	<select id="find" resultType="com.socar.web.domains.MyCouponDTO" parameterType="com.socar.web.domains.Command">
 	     select *
