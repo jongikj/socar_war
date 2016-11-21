@@ -21,6 +21,7 @@ public class AdminServiceImpl implements AdminService{
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Autowired private SqlSession sqlSession;
 	@Autowired Retval ret;
+	
 	@Override
 	public Retval notice_count() {
 		AdminMapper mapper = sqlSession.getMapper(AdminMapper.class);

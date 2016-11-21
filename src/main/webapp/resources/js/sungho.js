@@ -881,7 +881,6 @@ var customer = (function(){
 		
 		
 		faq_click_event : function(){
-			//클릭 이벤트
 			$(".faq .faq-list dt").click(function(){
 				$(".faq .faq-list dt").removeClass('active');
 				$(this).addClass('active');

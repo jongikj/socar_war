@@ -11,5 +11,6 @@ import lombok.Setter;
 @Component
 @Lazy
 public class MemberDTO {
-	@Getter @Setter private String id, pw, name, phone, address, licenseType, licenseNum, licenseStart, licenseEnd, birth, gender, email;
+	@Getter @Setter private String id, pw, name, phone, address, licenseType, 
+	licenseNum, licenseStart, licenseEnd, birth, gender, email;
 }

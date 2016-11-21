@@ -55,5 +55,16 @@
    member.init();
    coupon.init();
    booking.init();
+   function noEvent() { // 새로 고침 방지
+       if (event.keyCode == 116) {
+           alert("F5 새로고침은 지원하지 않습니다..");
+           event.keyCode = 2;
+           return false;
+       } else if (event.ctrlKey
+               && (event.keyCode == 78 || event.keyCode == 82)) {
+           return false;
+       }
+   }
+document.onkeydown = noEvent;
 </script>
 </html>

@@ -59,9 +59,10 @@ email
 call insert_member(#{id},#{name},#{pw},#{phone},#{address},#{licenseType},#{licenseNum},#{licenseEnd},#{licenseStart},#{birth},#{gender},#{email})
 </insert>
 <update id="update" parameterType="com.socar.web.domains.MemberDTO">
-update member set pw= #{pw} , email = #{email} , phone = #{phone} , address = #{address}, 
-license_type = #{licenseType}, license_num = #{licenseNum}, license_end = #{licenseEnd}, license_start = #{licenseStart}   
-where id = #{id}</update>
+	update member set pw= #{pw} , email = #{email} , phone = #{phone} , address = #{address}, 
+	license_type = #{licenseType}, license_num = #{licenseNum}, license_end = #{licenseEnd}, license_start = #{licenseStart}   
+	where id = #{id}
+</update>
 
 <delete id="delete" parameterType="string">
 delete from member where id=#{id}

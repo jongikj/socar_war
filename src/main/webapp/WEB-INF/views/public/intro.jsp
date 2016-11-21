@@ -1,19 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<body id="intro" style="width:100%; height:700px;background-image: url(/web/resources/img/public/airIntro.png);background-repeat:no-repeat;background-size:100% 100%;">
-<h1 style="padding-top:5%; text-align:center;color:blue">팀장:박승주</h1>
-<h3 style="padding-top:5%; text-align:center;color:blue">호스팅:배근홍
-검색:이현우
-예약:한상호
-멤버:최희선
-어드민:최인철
-main page 구성:최미화
-</h3>
-<h2 style="margin-top:30% ; text-align:center;color: red">저희는 숙박 공유 사이트 Airbnb를 모델로 만들었고, 상업적인 용도로는 쓰지않습니다.</h2>
+<body style="background-color: #f8f8f8">
+<h3 style="padding-top:5%; text-align:center;color:blue">시연 동영상</h1>
+<div style="text-align: center;">
+<iframe width="650" height="400" src="https://www.youtube.com/embed/OpL-FNPMVlM?&autoplay=1" frameborder="0" allowfullscreen></iframe>
+<h3>본 사이트는 포트폴리오를 목적으로 사용하고 있으며, 상업적으로 사용하지 않습니다.</h4>
+<h4>관리자 모드는 <span style="color: blue;">ID : admin, 비밀번호 : admin</span> 으로 접속하며</h4>
+<h4>사용자 모드는 <span style="color: blue;">ID : hong, 비밀번호 : hong</span> 을 기본적으로 제공합니다.</h4>
+<input id="intro_go_main" style="size: 40" type="button" value="이 곳을 클릭하면 메인으로 이동합니다.">
+</div>
 </body>
-<script>
-$('#intro').css('cursor','pointer')
-$('#intro').on('click','#pub_article',function(){
-	alert("test");
-   location.href=('/web/home')
+<script type="text/javascript">
+$('#intro_go_main').click(function() {
+	location.href = '/web/home';
 });
 </script>

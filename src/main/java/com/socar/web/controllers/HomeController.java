@@ -27,12 +27,17 @@ public class HomeController {
 	@Autowired CustomerDTO customer;
 	@Autowired CustomerServiceImpl service;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String intro(Locale locale, Model model) {
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		command.setKeyField("list");
 		command.setKeyword("1");
 		model.addAttribute("notice", service.list(command));
 		return "public:public/content.tiles";
+	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String intro() {
+		return "public/intro.jsp";
 	}
 }

@@ -6,8 +6,7 @@
 <!-- role : 공지사항 notice, 자주묻는 질문 faq, 1대1문의 customer -->
 
 	<select id="count" resultType="com.socar.web.domains.Retval">
-		select count(*) as count 
-	   from   notice
+		select count(*) as count from notice
 	</select>
 	<select id="list" resultType="com.socar.web.domains.CustomerDTO" parameterType="com.socar.web.domains.Command">
       select t2.*
@@ -110,7 +109,6 @@
       { call update_customer(
          #{answer, mode=IN,jdbcType=CLOB},
          #{customerSeq, mode=IN,jdbcType=BIGINT}
-      )
-      }
+      )}
    </update>
 </mapper>

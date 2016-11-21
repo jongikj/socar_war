@@ -54,7 +54,8 @@ public class CardController {
 	}
 	
 	@RequestMapping("/find_count/{keyField}/{keyword}")
-	public @ResponseBody HashMap<String, Object> findCount(@PathVariable String keyField, @PathVariable String keyword){
+	public @ResponseBody HashMap<String, Object> findCount(@PathVariable String keyField, 
+			@PathVariable String keyword){
 		logger.info("CardController GO TO {}", "findCount");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		command.setKeyField(keyField);

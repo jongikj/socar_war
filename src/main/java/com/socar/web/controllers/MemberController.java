@@ -162,7 +162,7 @@ public class MemberController {
       logger.info("GO TO {}", "LOGOUT");
       status.setComplete();
       logger.info("SESSION IS {}", "CLEAR");
-      return "redirect:/";
+      return "redirect:/home";
    }   
    
    @RequestMapping("/signined/admin_header")

@@ -61,7 +61,7 @@ public class CustomerController {
 	      return map;
 	}
 	
-	@RequestMapping("/home_list/{pgNum}")
+	@RequestMapping("/home_list/{pgNum}") 
 	public @ResponseBody HashMap<String, Object> homeList(@PathVariable String pgNum){
 		logger.info("CustomerController {}", "list");
 		HashMap<String, Object> map = new HashMap<String, Object>();
